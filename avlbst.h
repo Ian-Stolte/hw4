@@ -131,11 +131,11 @@ template <class Key, class Value>
 class AVLTree : public BinarySearchTree<Key, Value>
 {
 public:
-    virtual void insert (const std::pair<const Key, Value> &new_item); // TODO
+    virtual void insert (const std::pair<const Key, Value> &newItem); // TODO
     virtual void remove(const Key& key);  // TODO
 protected:
     virtual void nodeSwap( AVLNode<Key,Value>* n1, AVLNode<Key,Value>* n2);
-    void insertFix(/*Node<Key, Value>* newNode*/)
+    void insertFix(/*Node<Key, Value>* newNode*/);
     void removeFix();
     // Add helper functions here
 
@@ -147,10 +147,16 @@ protected:
  * overwrite the current value with the updated value.
  */
 template<class Key, class Value>
-void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
+void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &newItem)
 {
-    if (recInsert(new_item, root_))
+    if (BinarySearchTree<Key, Value>::root_ == NULL)
+      BinarySearchTree<Key, Value>::root_ = new AVLNode<Key, Value>(newItem.first, newItem.second, NULL);
+
+    else
+    {
+      if (BinarySearchTree<Key, Value>::recInsert(newItem, BinarySearchTree<Key, Value>::root_))
         insertFix();
+    }
 }
 
 template<class Key, class Value>
